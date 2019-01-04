@@ -66,6 +66,17 @@ public class ServerHandler implements Runnable {
                     MasterOperation masterOperation = new MasterOperation(socket, chatLobby);
                     System.out.println(chatUser.getNickname() + "님의 입력 : " + message);
                     if (message.indexOf("/whisper") == 0) {
+                        String[] s = message.split(" ");
+                        String whisperTo = s[1];
+                        System.out.println("whisper to: " + whisperTo);
+                        String msg = message.substring(message.indexOf(s[2]));
+                        List<ChatUser> chatUsers = chatLobby.getUser(chatUser);
+                        for (ChatUser cu : chatUsers) {
+                            if (cu.getNickname().equals(whisperTo)) {
+                                cu.write("[" + chatUser.getNickname() + "님의 귓속말] : " + msg);
+                                chatUser.write(whisperTo+"님에게 귓속말을 전송하였습니다.");
+                            }
+                        }
                     } else if (message.indexOf("/kick") == 0) {
                         masterOperation.kickUser(chatUser, message);
                     } else if(message.indexOf("/giveMaster") == 0){
