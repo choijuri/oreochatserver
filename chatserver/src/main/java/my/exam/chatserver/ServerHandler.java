@@ -54,6 +54,17 @@ public class ServerHandler implements Runnable {
                     }
                 } else { // 방안에 있을 경우
                     if (message.indexOf("/whisper") == 0) {
+                        String[] s = message.split(" ");
+                        String whisperTo = s[1];
+                        System.out.println("whisper to: " + whisperTo);
+                        String msg = message.substring(message.indexOf(s[2]));
+                        List<ChatUser> chatUsers = chatLobby.getUser(chatUser);
+                        for (ChatUser cu : chatUsers) {
+                            if (cu.getNickname().equals(whisperTo)) {
+                                cu.write("[" + chatUser.getNickname() + "님의 귓속말] : " + msg);
+                                chatUser.write(whisperTo+"님에게 귓속말을 전송하였습니다.");
+                            }
+                        }
                     } else if (message.indexOf("/kick") == 0) {
                     } else if(message.indexOf("/giveMaster") == 0){
                     } else if (message.indexOf("/change") == 0) {
