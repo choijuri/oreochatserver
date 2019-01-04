@@ -22,19 +22,17 @@ public class ServerHandler implements Runnable {
         chatUser.setNickname(nickname);
         System.out.println("nick : " + nickname);
 
-        chatLobby.addChatUser(chatUser);
-
         try {
             while (true) {
                 String message = chatUser.read();
                 System.out.println(chatUser.getNickname() + "님의 입력 : " + message);
                 System.out.println(inRoom);
+
                 if (!inRoom) { // 로비에 있을 경우
                     if (message.indexOf("/create") == 0) {
                         String title = message.substring(message.indexOf(" ") + 1);
                         chatLobby.createRoom(chatUser, title, true);
                         inRoom = true;
-
                     }else if(message.indexOf("/join") == 0){
                         String strRoomNum = message.substring(message.indexOf(" ") +1);
                         System.out.println(strRoomNum);
@@ -56,7 +54,8 @@ public class ServerHandler implements Runnable {
                     if (message.indexOf("/whisper") == 0) {
                     } else if (message.indexOf("/kick") == 0) {
                     } else if(message.indexOf("/giveMaster") == 0){
-                    } else if (message.indexOf("/change") == 0) {
+                    } else if(message.indexOf("/change")==0) {
+                        change(chatUser, message);
                     }else {
                         List<ChatUser> chatUsers = chatLobby.getUser(chatUser);
                         for (ChatUser cu : chatUsers) {
@@ -69,5 +68,17 @@ public class ServerHandler implements Runnable {
             chatLobby.exit(chatUser);
         }
     }
-}
+
+    private void change(ChatUser chatUser, String message) {
+        String name = message.substring(message.indexOf(" "));
+            List<ChatUser> list = chatLobby.getUser(chatUser);
+            for (ChatUser cu : list) {
+                if (cu.getNickname().equals(chatUser.getNickname())) {
+                    cu.setNickname(name);
+                    cu.write("이름이 " + name + "으로 변경되었습니다.");
+                }
+            }
+        }
+    }
+
 
