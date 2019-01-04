@@ -24,12 +24,9 @@ public class ServerHandler implements Runnable {
         try {
             while (true) {
                 String message = chatUser.read();
-<<<<<<< HEAD
-=======
                 System.out.println(chatUser.getNickname() + "님의 입력 : " + message);
                 System.out.println(inRoom);
 
->>>>>>> 9e9ab2f512cd5530f09b52cb9576993a02cc8e1c
                 if (!inRoom) { // 로비에 있을 경우
                     chatUser.write("환영합니다. 다음 명령어들을 사용하여 채팅을 즐겨주세요 \n /create 방이름 -> 방 생성, /join 방아이디 -> 방 입장, /list -> 방목록");
                     System.out.println(chatUser.getNickname() + "님의 입력 : " + message);
@@ -37,17 +34,14 @@ public class ServerHandler implements Runnable {
                         String title = message.substring(message.indexOf(" ") + 1);
                         chatLobby.createRoom(chatUser, title, true);
                         inRoom = true;
-<<<<<<< HEAD
                         if (chatUser.roomMaster() == true) {
                             chatUser.write("방장님 환영합니다. 방장은 다음의 기능을 사용 할 수 있습니다. \n /kick 유저 \n /whisper 유저이름, /change 바꿀이름");
                         }
 
                     } else if (message.indexOf("/join") == 0) {
                         String strRoomNum = message.substring(message.indexOf(" ") + 1);
-=======
                     }else if(message.indexOf("/join") == 0){
                         String strRoomNum = message.substring(message.indexOf(" ") +1);
->>>>>>> 9e9ab2f512cd5530f09b52cb9576993a02cc8e1c
                         System.out.println(strRoomNum);
                         int roomNum = Integer.parseInt(strRoomNum);
                         chatLobby.joinRoom(roomNum, chatUser);
@@ -75,15 +69,10 @@ public class ServerHandler implements Runnable {
                     } else if (message.indexOf("/kick") == 0) {
                         masterOperation.kickUser(chatUser, message);
                     } else if(message.indexOf("/giveMaster") == 0){
-<<<<<<< HEAD
                         masterOperation.giveMaster(chatUser, message);
-                    } else if (message.indexOf("/change") == 0) {
-                    } else {
-=======
                     } else if(message.indexOf("/change")==0) {
                         change(chatUser, message);
                     }else {
->>>>>>> 9e9ab2f512cd5530f09b52cb9576993a02cc8e1c
                         List<ChatUser> chatUsers = chatLobby.getUser(chatUser);
                         for (ChatUser cu : chatUsers) {
                             cu.write(chatUser.getNickname() + " : " + message);
